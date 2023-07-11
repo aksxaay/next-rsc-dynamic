@@ -4,7 +4,7 @@ import { makeSource } from 'contentlayer/source-remote-files'
 
 const Post = defineDocumentType(() => ({
   name: 'Post',
-  filePathPattern: `docs/**/*.md`,
+  filePathPattern: `**/*.mdx`,
   fields: {
     title: {
       type: 'string',
@@ -28,7 +28,7 @@ const syncContentFromGit = async ({ contentDir, gitTag }: { contentDir: string; 
   console.log(`Syncing content files from git (${gitTag}) to ${contentDir}`)
 
   const syncRun = async () => {
-    const gitUrl = 'https://github.com/vercel/next.js.git'
+    const gitUrl = 'https://github.com/aksxaay/mdx-content.git'
     await runBashCommand(`
       #! /usr/bin/env bash
 
@@ -51,7 +51,7 @@ const syncContentFromGit = async ({ contentDir, gitTag }: { contentDir: string; 
             git remote add origin ${gitUrl};
             git config core.sparsecheckout true;
             git config advice.detachedHead false;
-            echo "docs/*" >> .git/info/sparse-checkout;
+            # echo "docs/*" >> .git/info/sparse-checkout;
             git checkout --quiet -b ${gitTag};
             git fetch --quiet --depth=1 origin ${gitTag};
             git checkout --quiet FETCH_HEAD;
@@ -123,10 +123,10 @@ const runBashCommand = (command: string) =>
     })
   })
 
-export default makeSource((sourceKey = 'canary') => ({
+export default makeSource((sourceKey = 'main') => ({
   syncFiles: (contentDir) => syncContentFromGit({ contentDir, gitTag: sourceKey }),
-  contentDirPath: `content/nextjs-repo-${sourceKey}`,
-  contentDirInclude: ['docs'],
+  contentDirPath: `content/`,
+  // contentDirInclude: ['docs'],
   documentTypes: [Post],
   disableImportAliasWarning: true,
   experimental: { enableDynamicBuild: true },
