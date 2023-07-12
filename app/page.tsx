@@ -1,6 +1,8 @@
-import Link from 'next/link'
-import { allPosts, Post } from 'contentlayer/generated'
+import Link from "next/link";
+import { allPosts, Post } from "contentlayer/generated";
 
+export const revalidate = 10;
+  // dynamicParams = true;
 export default async function Home({ params }: { params: { tag: string } }) {
   return (
     <div className="py-8 mx-auto max-w-xl">
@@ -9,10 +11,10 @@ export default async function Home({ params }: { params: { tag: string } }) {
 
       {allPosts.map((post, idx) => (
         <div key={idx}>
-          <Link href={'/' + post.url}>{post.url}</Link>
+          <Link href={"/" + post.url}>{post.url}</Link>
         </div>
         // <PostCard key={idx} {...post} />
       ))}
     </div>
-  )
+  );
 }
